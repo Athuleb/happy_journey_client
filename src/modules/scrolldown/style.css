@@ -1,0 +1,67 @@
+@keyframes typing {
+    from { width: 0; }
+    to { width: 25%; }
+  }
+  
+  .typing-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .typing {
+    font-weight: medium;
+    font-size: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    padding-left: 30px;
+    animation: typing 2s steps(20, end) forwards;
+    animation-timeline: view();
+    animation-range:entry 50% cover 40% ;
+  }
+  @keyframes animimage {
+    0%{opacity: 10%;border-radius: 0px;}
+    50%{opacity: 90%; border-radius: 25px;}
+    100%{opacity: 100%;border-radius: 0px;}
+  }
+  .animate-img {
+    animation: animimage 3s ease-in-out ;
+    animation-timeline: view();
+  }
+
+  @keyframes callto {
+    0%{opacity: 0;}
+    35%{opacity: 90%;}
+    100%{opacity: 100%;}
+  }
+  .Call-to-Action{
+    animation: callto 3s ease-in-out ;
+    animation-timeline: view();
+    
+  }
+  .dest-card:hover{
+    opacity: 100%;
+    cursor: pointer;
+  }
+
+.blur {
+  filter: blur(25px); 
+  pointer-events: none; 
+  transition: filter 0.3s; 
+}
+
+@keyframes slide{
+  0%{
+    transform: translateX(100%);
+    opacity: 0%;
+  }
+  100%{
+    transform: translateX(0%);
+    opacity: 100%;
+  }
+}
+
+.slide-anim{
+  animation: slide 1.5s ease-in forwards;
+}

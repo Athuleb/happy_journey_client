@@ -1,0 +1,9 @@
+.main-layout{
+    width: 100vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    color: black;
+    background-color: rgba(255, 247, 86, 0.986);
+
+}
