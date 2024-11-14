@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Card, CardContent, Fade, CardMedia } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://journey-engine.onrender.com/api/";
 function SearchResult() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);

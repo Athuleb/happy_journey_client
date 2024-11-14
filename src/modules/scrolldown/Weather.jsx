@@ -4,7 +4,7 @@ import axios from 'axios';
 import { WiDaySunny, WiRain, WiSnow, WiCloudy, WiThunderstorm, WiFog } from 'weather-icons-react';
 import SearchIcon from '@mui/icons-material/Search';
 import WeatherIcons from './WeatherIcons';
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://journey-engine.onrender.com/api/";
 
 
 

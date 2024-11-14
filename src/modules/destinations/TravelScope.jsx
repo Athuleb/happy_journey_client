@@ -3,7 +3,7 @@ import { TextField, Button, Container, Typography, Box, styled, keyframes, Circu
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import axios from 'axios';
 import car from '/icons/car.png';
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://journey-engine.onrender.com/api/";
 function TravelScope() {
   const [formData, setFormData] = useState({
     from: '',

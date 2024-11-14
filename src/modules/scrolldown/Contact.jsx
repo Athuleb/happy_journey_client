@@ -3,7 +3,7 @@ import { Container, Box, Typography, TextField, Button, Grid } from '@mui/materi
 import { styled } from '@mui/system';
 import backgroundImg from '/bg.jpg'; // Add your background image path here
 import axios from 'axios';
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://journey-engine.onrender.com/api/";
 
 // Styled components
 const BackgroundContainer = styled(Box)({

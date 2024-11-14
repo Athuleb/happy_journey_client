@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from '@mui/material/Skeleton';
 
 import axios from 'axios';
-const API_URL = "https://journey-engine.onrender.com/"
+const API_URL = "https://journey-engine.onrender.com/api/"
 console.log("API_URL",API_URL);
 
 //const API_URL = process.env.REACT_APP_API_URL;
