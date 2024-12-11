@@ -6,11 +6,16 @@ import './style.css';
 import packages from '/Packages.jpeg'
 import per from '/per.jpeg'
 import longbg from '/longbg.jpg'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function Home() {
   const navigate = useNavigate()
+  const location = useLocation();
+  const { name } = location.state || {}; 
+  const uppername = name.charAt(0).toUpperCase() + name.slice(1);
+console.log('name>>',uppername);
+
   return (
     <div>
       <div style={{ position: 'relative', width: '100%', height: '80vh', paddingTop: '5.5rem', color: 'black' }}>
@@ -41,7 +46,7 @@ function Home() {
           }}
         >
           <Typography variant="h2" sx={{ fontWeight: 'bold', textAlign: 'center', mb: 2, fontSize: { xs: '1.5rem', md: '2.5rem' } }}>
-            Welcome to Happy Journey
+          Welcome {uppername ? uppername : ''} to Happy Journey
           </Typography>
 
           <Typography variant="h6" sx={{ textAlign: 'center', maxWidth: '600px', mb: 4 }}>

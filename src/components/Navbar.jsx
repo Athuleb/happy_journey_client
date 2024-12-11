@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import HomrIcon from '@mui/icons-material/Home';
+import HomeIcon from '@mui/icons-material/Home';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List'; // Import List component
 import ListItem from '@mui/material/ListItem'; // Import ListItem component
@@ -76,7 +76,7 @@ export default function StylishToolbar() {
     <StyledAppBar position="fixed" sx={{ width: '100vw', margin: '15px 0px', borderRadius: '20px' }} className=''>
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu" sx={{ color: 'black', mr: 2 }} onClick={() => (window.location.assign('/#home'))}>
-          <HomrIcon />
+          <HomeIcon />
         </IconButton>
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, fontFamily: 'verdana', color: 'black' }}>
           Happy Journey

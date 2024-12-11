@@ -3,7 +3,8 @@ import { Grid, Card, CardMedia, Typography, CardContent, Skeleton, Modal, Box, T
 import './style.css'
 import axios from 'axios'
 // const API_URL = process.env.REACT_APP_API_URL;
-const API_URL = "https://journey-engine.onrender.com/api/"
+//const API_URL = "https://journey-engine.onrender.com/api/"
+
 
 function TopDestinstions() {
   const [imgData, setImgData] = useState([])
@@ -13,10 +14,10 @@ function TopDestinstions() {
 
   const getDestinatoins = async () => {
     try {
-      console.log(API_URL);
+    
       
-      const response = await (await axios.get(`${API_URL}top-destinations/`)).data
-      console.log(response);
+      //const response = await axios.get('http://127.0.0.1:8000/top-destinations/')
+      console.log("response>>???",response.data);
       
       setImgData(response.data || [])
       await new Promise(resolve => setTimeout(resolve, 500))
