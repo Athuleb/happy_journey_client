@@ -81,11 +81,11 @@ function TravelLandingPage() {
                 </video>
 
                 <Typography variant="h4" component="div" gutterBottom sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 'bold' }}>
-                    Hello World
+                    Explore the World
                 </Typography>
 
                 <Typography variant="h1" component="h1" gutterBottom sx={{ fontFamily: 'Pacifico, cursive', fontWeight: 'normal' }}>
-                    Travel<span style={{ color:'#d1c411'}}>...</span> Explore<span style={{ color:'#d1c411'}}>...</span > Discover<span style={{ color:'#d1c411'}}>...</span> <br />
+                    Travel<span style={{ color: '#d1c411' }}>...</span> Explore<span style={{ color: '#d1c411' }}>...</span > Discover<span style={{ color: '#d1c411' }}>...</span> <br />
                     <span style={{ position: 'relative', zIndex: 10 }}></span>
                 </Typography>
 
