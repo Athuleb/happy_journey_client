@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List'; // Import List component
 import ListItem from '@mui/material/ListItem'; // Import ListItem component
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 const StyledAppBar = styled(AppBar)({
@@ -72,8 +73,11 @@ export default function StylishToolbar() {
     console.log("search===", search);
     navigate(`/search?query=${search}`)
   }
+
+
+  
   return (
-    <StyledAppBar position="fixed" sx={{ width: '100vw', margin: '15px 0px', borderRadius: '20px' }} className=''>
+    <StyledAppBar position="fixed" sx={{ width: '100vw', margin: '15px 0px', borderRadius: '20px' }}>
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu" sx={{ color: 'black', mr: 2 }} onClick={() => (window.location.assign('/#home'))}>
           <HomeIcon />
@@ -83,12 +87,12 @@ export default function StylishToolbar() {
         </Typography>
         <List sx={{ display: 'flex', padding: 0, margin: 0, color: 'black' }}>
           <ListItem sx={{ padding: 0 }}>
-            <a href="/#home" style={{ textDecoration: 'none', color: 'black' }}>
+            <a href="/main/#home" style={{ textDecoration: 'none', color: 'black' }}>
               <Button color="inherit">Home</Button>
             </a>
           </ListItem>
           <ListItem sx={{ padding: 0 }}>
-            <a href="/#top-destinations" style={{ textDecoration: 'none', color: 'black', width: '10rem' }}>
+            <a href="/main/#top-destinations" style={{ textDecoration: 'none', color: 'black', width: '10rem' }}>
               <Button color="inherit">Top Destinations</Button>
             </a>
           </ListItem>
@@ -96,12 +100,12 @@ export default function StylishToolbar() {
             <Button color="inherit" onClick={() => navigate('/travel-scope')}>TravelScope</Button>
           </ListItem>
           <ListItem sx={{ padding: 0 }}>
-            <a href="/#weather" style={{ textDecoration: 'none', color: 'black' }}>
+            <a href="/main/#weather" style={{ textDecoration: 'none', color: 'black' }}>
               <Button color="inherit">Weather</Button>
             </a>
           </ListItem>
         </List>
-        <form onSubmit={handleSearch}>
+        <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'row' }}>
           <Search >
             <SearchIconWrapper>
               <SearchIcon />

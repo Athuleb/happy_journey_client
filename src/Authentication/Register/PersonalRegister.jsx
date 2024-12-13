@@ -216,16 +216,18 @@ function PersonalRegister() {
                   label="Password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
-                  InputProps={{
-                    endAdornment: (
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handlePasswordVisibilityToggle}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    ),
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handlePasswordVisibilityToggle}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      )
+                    },
                   }}
                 />
               </Grid>

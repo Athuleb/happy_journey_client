@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Button, Box, Typography, Container, CssBaseline, Link, CircularProgress } from '@mui/material';
+import { TextField, Button, Box, Typography, Container, CssBaseline, Link, CircularProgress, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import usePopup from '../../hooks/usePopup';
-usePopup
-
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 const theme = createTheme({
   palette: {
     primary: {
@@ -23,6 +22,19 @@ function PersonalLogin() {
   const navigate = useNavigate();
   const { showSnackbar } = usePopup();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const handleForgotPassword = async (event) => {
+    // const data = new FormData(event.currentTarget);
+    // email = data.get('email')
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/auth/forget-password/')
+      console.log("password response", response.data);
+
+    } catch (error) {
+      console.error('password error', error);
+
+    }
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,8 +47,10 @@ function PersonalLogin() {
       user_type: 'personal',
     };
 
+
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000)); 
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const response = await axios.post('http://127.0.0.1:8000/auth/login/', loginDetails);
       console.log('Login response:', response.data);
       if (response.data.message === 'Login successful') {
@@ -63,9 +77,11 @@ function PersonalLogin() {
     finally {
       setLoading(false);
     }
-
-
   };
+
+  const handlePasswordVisibilityToggle = () => {
+    setShowPassword(prev => !prev)
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -104,10 +120,23 @@ function PersonalLogin() {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               variant="outlined"
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handlePasswordVisibilityToggle}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  )
+                },
+              }}
             />
             <Button
               type="submit"
@@ -142,6 +171,15 @@ function PersonalLogin() {
               }}
             >  Don't have an account? Sign up here
             </Link>
+            <Button
+              variant="text"
+              size="large"
+              sx={{ color: 'black', marginTop: 2 }}
+              onClick={() => navigate('/forgot-password')}
+            >
+              Forgot Password
+            </Button>
+
           </Box>
         </Box>
       </Container>

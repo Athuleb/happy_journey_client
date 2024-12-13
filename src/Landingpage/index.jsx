@@ -76,7 +76,7 @@ function TravelLandingPage() {
                     muted
                     style={BackgroundVideo}
                 >
-                    <source src="/a607a385ec2dd7063187c42796012922.mp4" type="video/mp4" />
+                    <source src="/backgroundVideo.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
 

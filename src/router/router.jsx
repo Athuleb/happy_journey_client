@@ -11,7 +11,7 @@ import BusinessLogin from "../Authentication/Login/BusinessLogin";
 import TravelLandingPage from "../Landingpage";
 import PersonalRegister from "../Authentication/Register/PersonalRegister";
 import BusinessRegister from "../Authentication/Register/BusinessRegister";
-
+import ForgotPassword from "../Authentication/Forgotpassword/ForgotPassword";
 
 
 const route = createBrowserRouter([
@@ -34,12 +34,16 @@ const route = createBrowserRouter([
     ],
   },
   {
-    path: '/person-signup',
-    element: <PersonalRegister />
-  }, 
+    path: "/forgot-password",  // Move this route to the root level
+    element: <ForgotPassword />,
+  },  
   {
-    path:'/business-signup',
-    element:<BusinessRegister/>
+    path: '/person-signup',
+    element: <PersonalRegister />,
+  },
+  {
+    path: '/business-signup',
+    element: <BusinessRegister />,
   },
 
   {
@@ -64,7 +68,8 @@ const route = createBrowserRouter([
       },
     ],
   },
-],
-);
+]);
 
 export default route;
+
+

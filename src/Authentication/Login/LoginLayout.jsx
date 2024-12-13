@@ -14,17 +14,7 @@ function LoginLayout() {
     setIsPersonal(type);
     navigate(type ? "/login" : "/login/business-login");
   };
-//   const {showSnackbar} = usePopup()
-//  const handleClick = ()=>{
-//   showSnackbar({
-//     message:"Success",
-//     open:true,
-//     duration:2000,
-//     severity:"success",
-//     variant:"filled",
-//     placement:{vertical:"bottom",horizontal:"left"}
-//   })  
-//  }
+
 
   return (
     <Box

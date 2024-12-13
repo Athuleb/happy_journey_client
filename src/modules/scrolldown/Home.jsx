@@ -52,7 +52,7 @@ console.log('name>>',uppername);
           <Typography variant="h6" sx={{ textAlign: 'center', maxWidth: '600px', mb: 4 }}>
             Discover unforgettable experiences, explore top destinations, and start planning your next adventure with us.
           </Typography>
-          <Button variant="contained" sx={{ backgroundColor: '#fad05c',width:'20vh' ,height:'5vh',color:'black',fontWeight:'bold' }} onClick={()=>navigate('/explore')}>
+          <Button variant="contained" sx={{ backgroundColor: '#fad05c',width:'20vh' ,height:'5vh',color:'black',fontWeight:'bold' }} onClick={()=>navigate('/main/explore')}>
             Explore Now
           </Button>
         </Box>
