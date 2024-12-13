@@ -81,7 +81,7 @@ function TravelLandingPage() {
                 </video>
 
                 <Typography variant="h4" component="div" gutterBottom sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 'bold' }}>
-                    Explore the World
+                    Hello World
                 </Typography>
 
                 <Typography variant="h1" component="h1" gutterBottom sx={{ fontFamily: 'Pacifico, cursive', fontWeight: 'normal' }}>
