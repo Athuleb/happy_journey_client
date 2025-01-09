@@ -1,75 +1,167 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import Mainlayout from "../layout/Mainlayout";
-import TravelScope from "../modules/destinations/TravelScope";
-import ScrollDown from "../modules/scrolldown/ScrollDown";
-import Explore from "../modules/explore/Explore";
-import SearchResult from "../Search/SearchResult";
-import LoginLayout from "../Authentication/Login/LoginLayout";
-import PersonalLogin from "../Authentication/Login/PersonalLogin";
-import BusinessLogin from "../Authentication/Login/BusinessLogin";
-import TravelLandingPage from "../Landingpage";
-import PersonalRegister from "../Authentication/Register/PersonalRegister";
-import BusinessRegister from "../Authentication/Register/BusinessRegister";
-import ForgotPassword from "../Authentication/Forgotpassword/ForgotPassword";
+import { CircularProgress } from "@mui/material";
 
+const TravelLandingPage = lazy(() => import("../Welcome"));
+const LoginLayout = lazy(() => import("../Authentication/Login/LoginLayout"));
+const PersonalLogin = lazy(() => import("../Authentication/Login/PersonalLogin"));
+const BusinessLogin = lazy(() => import("../Authentication/Login/BusinessLogin"));
+const ForgotPassword = lazy(() => import("../Authentication/Forgotpassword/ForgotPassword"));
+const ForgotPassowrdLayout = lazy(() => import("../Authentication/Forgotpassword/ForgotPassowrdLayout"));
+const ValidateOtp = lazy(() => import("../Authentication/Forgotpassword/ValidateOtp"));
+const ResetPassword = lazy(() => import("../Authentication/Resetpassword/ResetPassword"));
+const PersonalRegister = lazy(() => import("../Authentication/Register/PersonalRegister"));
+const BusinessRegister = lazy(() => import("../Authentication/Register/BusinessRegister"));
+const Mainlayout = lazy(() => import("../layout/Mainlayout"));
+const ScrollDown = lazy(() => import("../modules/scrolldown/ScrollDown"));
+const TopDestinstions = lazy(() => import("../modules/scrolldown/TopDestinations"));
+const TravelScope = lazy(() => import("../modules/destinations/TravelScope"));
+const Explore = lazy(() => import("../modules/explore/Explore"));
+const SearchResult = lazy(() => import("../Search/SearchResult"));
 
-const route = createBrowserRouter([
+const LazyLoading = ({ children }) => {
+  return (
+    <Suspense fallback={<CircularProgress size={20} />}>
+      {children}
+    </Suspense>
+  );
+};
+
+export const routes = createBrowserRouter([
   {
-    path: "/", // Root path
-    element: <TravelLandingPage />,
+    path: "/",
+    element: (
+      <LazyLoading>
+        <TravelLandingPage />
+      </LazyLoading>
+    ),
   },
   {
-    path: "/login",
-    element: <LoginLayout />,
+    path: "login",
+    element: (
+      <LazyLoading>
+        <LoginLayout />
+      </LazyLoading>
+    ),
     children: [
       {
         index: true,
-        element: <PersonalLogin />,
+        element: (
+          <LazyLoading>
+            <PersonalLogin />
+          </LazyLoading>
+        ),
       },
       {
         path: "business-login",
-        element: <BusinessLogin />,
+        element: (
+          <LazyLoading>
+            <BusinessLogin />
+          </LazyLoading>
+        ),
       },
     ],
   },
   {
-    path: "/forgot-password",  // Move this route to the root level
-    element: <ForgotPassword />,
-  },  
-  {
-    path: '/person-signup',
-    element: <PersonalRegister />,
-  },
-  {
-    path: '/business-signup',
-    element: <BusinessRegister />,
-  },
-
-  {
-    path: "/main",
-    element: <Mainlayout />,
+    path: "forgot-password",
+    element: (
+      <LazyLoading>
+        <ForgotPassowrdLayout />
+      </LazyLoading>
+    ),
     children: [
       {
         index: true,
-        element: <ScrollDown />,
+        element: (
+          <LazyLoading>
+            <ForgotPassword />
+          </LazyLoading>
+        ),
+      },
+      {
+        path: "validate",
+        element: (
+          <LazyLoading>
+            <ValidateOtp />
+          </LazyLoading>
+        ),
+      },
+      {
+        path: "reset-password",
+        element: (
+          <LazyLoading>
+            <ResetPassword />
+          </LazyLoading>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/person-signup",
+    element: (
+      <LazyLoading>
+        <PersonalRegister />
+      </LazyLoading>
+    ),
+  },
+  {
+    path: "/business-signup",
+    element: (
+      <LazyLoading>
+        <BusinessRegister />
+      </LazyLoading>
+    ),
+  },
+  {
+    path: "/main",
+    element: (
+      <LazyLoading>
+        <Mainlayout />
+      </LazyLoading>
+    ),
+    children: [
+      {
+        index: true,
+        element: (
+          <LazyLoading>
+            <ScrollDown />
+          </LazyLoading>
+        ),
+      },
+      {
+        path: "top-destinations",
+        element: (
+          <LazyLoading>
+            <TopDestinstions />
+          </LazyLoading>
+        ),
       },
       {
         path: "travel-scope",
-        element: <TravelScope />,
+        element: (
+          <LazyLoading>
+            <TravelScope />
+          </LazyLoading>
+        ),
       },
       {
         path: "explore",
-        element: <Explore />,
+        element: (
+          <LazyLoading>
+            <Explore />
+          </LazyLoading>
+        ),
       },
       {
         path: "search",
-        element: <SearchResult />,
+        element: (
+          <LazyLoading>
+            <SearchResult />
+          </LazyLoading>
+        ),
       },
     ],
   },
 ]);
 
-export default route;
-
-
+export default routes;

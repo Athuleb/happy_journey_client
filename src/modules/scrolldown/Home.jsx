@@ -10,11 +10,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function Home() {
-  const navigate = useNavigate()
+  const navigate = useNavigate() 
   const location = useLocation();
   const { name } = location.state || {}; 
   const uppername = name.charAt(0).toUpperCase() + name.slice(1);
-console.log('name>>',uppername);
 
   return (
     <div>
@@ -60,11 +59,11 @@ console.log('name>>',uppername);
 
       <Container sx={{ my: 6 }}>
 
-        <div className="typing-wrapper">
+        <Box className="typing-wrapper">
           <Typography className="typing" variant="h4" sx={{ mb: 4 }}>
             Why Choose Us
           </Typography>
-        </div>
+        </Box>
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>

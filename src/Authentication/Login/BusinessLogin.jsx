@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Typography, Container, CssBaseline,Link, CircularProgress } from '@mui/material';
+import { TextField, Button, Box, Typography, Container, CssBaseline, Link, CircularProgress } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import usePopup from '../../hooks/usePopup';
 import axios from 'axios';
+import instance from '../../services';
 
 
 const theme = createTheme({
@@ -19,10 +20,10 @@ const theme = createTheme({
 
 function BusinessLogin() {
   const navigate = useNavigate();
-  const {showSnackbar} = usePopup()
-  const [loading,setLoading] = useState(false)
+  const { showSnackbar } = usePopup()
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     //setError('');
     setLoading(true)
@@ -34,9 +35,8 @@ function BusinessLogin() {
     };
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000)); 
-      const response = await axios.post('http://127.0.0.1:8000/auth/login/', loginDetails);
-      console.log('Business Login response:', response.data.user_type);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await instance.post('/auth/login/', loginDetails);
       if (response.data.status === 200) {
         navigate('/main', {
           state: {
@@ -44,24 +44,24 @@ function BusinessLogin() {
           },
         });
       }
-      
+
     } catch (error) {
       const errorMessage = error.response && error.response.data && error.response.data.error
-      ? error.response.data.error
-      : "An unexpected error occurred please try again..";
+        ? error.response.data.error
+        : "An unexpected error occurred please try again..";
       showSnackbar({
-        message:`Login failed...${ errorMessage}`,
-        open:true,
-        duration:1000,
-        severity:"error",
-        variant:"filled",
-      }) 
+        message: `Login failed...${errorMessage}`,
+        open: true,
+        duration: 1000,
+        severity: "error",
+        variant: "filled",
+      })
       console.error('Login failed:', error.response ? error.response.data : error.message)
     }
-    finally{
+    finally {
       setLoading(false)
     }
- 
+
   };
 
   return (
@@ -121,23 +121,34 @@ function BusinessLogin() {
                 },
               }}
             >
-              {loading ? <CircularProgress size={24} sx={{ color: 'black' }}/> :'Login'}
+              {loading ? <CircularProgress size={24} sx={{ color: 'black' }} /> : 'Login'}
             </Button>
-            <Link  href="/business-signup"
-            sx={{
-              display: 'block',
-              textAlign: 'center',
-              marginTop: 2,
-              color: 'black',
-              textDecorationLine: 'none',
-              '&:hover': {
-                cursor: 'pointer',
-                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+            <Link href="/business-signup"
+              sx={{
+                display: 'block',
+                textAlign: 'center',
+                marginTop: 2,
+                color: 'black',
+                textDecorationLine: 'none',
+                '&:hover': {
+                  cursor: 'pointer',
+                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
 
-              }
-            }}
+                }
+              }}
             >  Don't have an account? Sign up here
             </Link>
+            <Button
+              variant="text"
+              size="large"
+              sx={{ color: 'black' }}
+              onClick={() => navigate('/forgot-password', {
+                state: { "user_type": 'business' }
+              }
+              )}
+            >
+              Forgot Password
+            </Button>
           </Box>
         </Box>
       </Container>

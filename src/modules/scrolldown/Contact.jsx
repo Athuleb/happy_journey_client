@@ -3,7 +3,7 @@ import { Container, Box, Typography, TextField, Button, Grid } from '@mui/materi
 import { styled } from '@mui/system';
 import backgroundImg from '/bg.jpg'; // Add your background image path here
 import axios from 'axios';
-const API_URL = "https://journey-engine.onrender.com/api/";
+import instance from '../../services';
 
 // Styled components
 const BackgroundContainer = styled(Box)({
@@ -49,10 +49,9 @@ function ContactUs() {
 
   const handleMessage = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
     try{
-    const response = await axios.post(
-      `${API_URL}email/`, 
+    const response = await instance.post(
+      `email/`, 
       formData,  
       {
           headers: {
@@ -60,7 +59,6 @@ function ContactUs() {
           },
       }
   );
-  console.log(response.data);
 } catch (error) {
   console.error('Error sending feedback:', error);
  

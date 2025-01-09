@@ -3,7 +3,8 @@ import { TextField, Button, Container, Typography, Box, styled, keyframes, Circu
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import axios from 'axios';
 import car from '/icons/car.png';
-const API_URL = "https://journey-engine.onrender.com/api/";
+import instance from '../../services';
+
 function TravelScope() {
   const [formData, setFormData] = useState({
     from: '',
@@ -66,7 +67,7 @@ function TravelScope() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(`${API_URL}distance/`, formData, {
+      const response = await instance.post('/distance/', formData, {
         headers: {
           'Content-Type': 'application/json',
         },

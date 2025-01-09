@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Button, Box, Typography, Container, CssBaseline, Link, CircularProgress, IconButton } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, duration, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import usePopup from '../../hooks/usePopup';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useMutation } from '@tanstack/react-query';
+import { login } from "./services"
+import instance from '../../services';
+
+//import { time } from 'console';
 const theme = createTheme({
   palette: {
     primary: {
@@ -23,18 +28,38 @@ function PersonalLogin() {
   const { showSnackbar } = usePopup();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
-  const handleForgotPassword = async (event) => {
-    // const data = new FormData(event.currentTarget);
-    // email = data.get('email')
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/auth/forget-password/')
-      console.log("password response", response.data);
 
-    } catch (error) {
-      console.error('password error', error);
+  // const { mutate, isLoading } = useMutation({
+  //   mutationFn: login,
+  //   onSuccess: (result) => {
+  //     if (result?.responseStatus == "success") {
+  //       showSnackbar({
+  //         message: result.response.message,
+  //         open: true,
+  //         duration: 1000,
+  //         severity: "success",
+  //         variant: "filled",
+  //       }),
+  //       console.log("result", result),
+  //         navigate('/main', {
+  //           state: {
+  //             name: result.response.data, 
+  //           },
+  //         });
 
-    }
-  }
+  //     } else {
+  //       console.log("message",result.response.message);
+
+  //       showSnackbar({
+  //         message: "oombi",
+  //         open: true,
+  //         duration: 1000,
+  //         severity: "error",
+  //         variant: "filled",
+  //       })
+  //     }
+  //   }
+  // })
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,24 +72,32 @@ function PersonalLogin() {
       user_type: 'personal',
     };
 
-
+    //mutate(loginDetails)
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const response = await axios.post('http://127.0.0.1:8000/auth/login/', loginDetails);
-      console.log('Login response:', response.data);
-      if (response.data.message === 'Login successful') {
+
+      const response = await instance.post('/auth/login/', loginDetails);
+      if (response.data.responseStatus === 'success') {
+
         navigate('/main', {
           state: {
-            name: response.data.user
+            name: response.data.response.data.token
           },
         });
-      }
+
+        showSnackbar({
+          message: `${response.data.response.message}`,
+          open: true,
+          duration: 1000,
+          severity: "success",
+          variant: 'filled'
+        })
+      };
+      setLoading(true)
 
     } catch (error) {
-      const errorMessage = error.response && error.response.data && error.response.data.error
-        ? error.response.data.error
-        : "An unexpected error occurred please try again..";
+      console.error('Login failed:', error.response ? error.response.data.response.message : error.message);
+      const errorMessage = error.response?.data?.response?.message || "An unexpected error occurred please try again..";
       showSnackbar({
         message: `Login failed...${errorMessage}`,
         open: true,
@@ -72,7 +105,6 @@ function PersonalLogin() {
         severity: "error",
         variant: "filled",
       })
-      console.error('Login failed:', error.response ? error.response.data : error.message);
     }
     finally {
       setLoading(false);
@@ -174,8 +206,11 @@ function PersonalLogin() {
             <Button
               variant="text"
               size="large"
-              sx={{ color: 'black', marginTop: 2 }}
-              onClick={() => navigate('/forgot-password')}
+              sx={{ color: 'black' }}
+              onClick={() => navigate('/forgot-password', {
+                state: { "user_type": 'personal' }
+              }
+              )}
             >
               Forgot Password
             </Button>

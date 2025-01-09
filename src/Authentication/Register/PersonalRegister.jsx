@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Typography, Container, CssBaseline, Grid, FormControl, FormControlLabel, Radio, RadioGroup, IconButton } from '@mui/material';
+import { TextField, Button, Box, Typography, Container, CssBaseline, Grid, FormControl, FormControlLabel, Radio, RadioGroup, IconButton, CircularProgress } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
+import usePopup from '../../hooks/usePopup';
+import instance from '../../services';
 
 const theme = createTheme({
   palette: {
@@ -19,8 +21,8 @@ const theme = createTheme({
 function PersonalRegister() {
   const [gender, setGender] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');  
-  const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false)
+  const { showSnackbar } = usePopup()
   const navigate = useNavigate();
 
   const handleGenderChange = (event) => {
@@ -33,6 +35,7 @@ function PersonalRegister() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true)
     const data = new FormData(event.currentTarget);
     const registrationData = {
       user_type: 'personal',
@@ -48,39 +51,68 @@ function PersonalRegister() {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/auth/register/', {
+      const response = await instance('/auth/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(registrationData),
       });
-       
+        
       if (response.ok) {
         const result = await response.json();
-        console.log("result",result);
         
-        if (result.user?.name) {
-          setSuccessMessage('Registration successful!');
-          setError('');
+        
+        if (result.responseStatus === "success" ) {
+          const token = result.data.token;
+          localStorage.setItem("authToken",token);
+          showSnackbar({
+            message: result.message, 
+            open: true,
+            duration: 1000,
+            severity: "success",
+            variant: 'filled'
+          });
           navigate('/main', {
             state: {
-              name: result.user.name,
+              name: result.data.username,
             },
           });
         } else {
-          setError('User data missing from response');
+          showSnackbar({
+            message: result.message,
+            open: true,
+            duration: 1000,
+            severity: "warning",
+            variant: 'filled'
+          });
         }
+
       } else {
         const errorResult = await response.json();
-        setError(errorResult.message || 'Registration failed. Please try again.');
-        setSuccessMessage('');
+        const message = errorResult?.message || 'Registration failed. Please try again.';
+        showSnackbar({
+          message: message,
+          open: true,
+          duration: 1000,
+          severity: "error",
+          variant: 'filled'
+        });
       }
     } catch (error) {
       console.error('Error:', error);
-      setError('Something went wrong. Please try again.');
-      setSuccessMessage('');
+      showSnackbar({
+        message: 'Something went wrong. Please try again.',
+        open: true,
+        duration: 1000,
+        severity: "error", 
+        variant: 'filled'
+      });
+
+    } finally {
+      setLoading(false)
     }
+
   };
 
   return (
@@ -138,7 +170,7 @@ function PersonalRegister() {
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     inputProps: {
-                      max: new Date().toISOString().split("T")[0], // Disable future dates
+                      max: new Date().toISOString().split("T")[0], 
                     },
                   }}
                 />
@@ -216,6 +248,10 @@ function PersonalRegister() {
                   label="Password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
+                  inputProps={
+                    {minLength: 8,}
+                  }
+                  helperText="Password must be at least 8 characters long"
                   slotProps={{
                     input: {
                       endAdornment: (
@@ -238,10 +274,9 @@ function PersonalRegister() {
               variant="contained"
               sx={{ mt: 3, mb: 2, backgroundColor: '#f2e65a', color: '#000' }}
             >
-              Register
+              {loading ? <CircularProgress size={24} sx={{ color: 'black' }} /> : 'Register'}
             </Button>
-            {error && <Typography color="error">{error}</Typography>}
-            {successMessage && <Typography color="success">{successMessage}</Typography>}
+           
           </Box>
         </Box>
       </Container>

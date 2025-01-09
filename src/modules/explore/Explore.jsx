@@ -5,10 +5,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from '@mui/material/Skeleton';
 
 import axios from 'axios';
-const API_URL = "https://journey-engine.onrender.com/api/"
-console.log("API_URL",API_URL);
+import instance from '../../services';
 
-//const API_URL = process.env.REACT_APP_API_URL;
 function srcset(image, size, rows = 1, cols = 1) {
   return {
     src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
@@ -17,15 +15,13 @@ function srcset(image, size, rows = 1, cols = 1) {
   };
 }
 
-export default function Explore() {
-
+export default function Explore() {  
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const getImage = async () => {
     try {
-      const response = await axios.get(`${API_URL}gallery/`)
-      console.log('API Response:', response);
-      console.log(' Response:', response.data);
+      const response = await instance.get(`gallery/`)
+
       if (Array.isArray(response.data.photos)) {
         setImages(response.data.photos);
       } else {
@@ -47,7 +43,7 @@ export default function Explore() {
     <div style={{ paddingTop: '10vh' }}>
       {loading ? (
         <ImageList sx={{ width: '100%', minHeight: '100vh' }} variant="masonry" cols={4} gap={8}>
-          {[...Array(8)].map((_, index) => (
+          {[...Array()].map((_, index) => (
             <Skeleton
               key={index}
               variant="rectangular"

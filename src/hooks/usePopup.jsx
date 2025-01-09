@@ -5,7 +5,7 @@ const usePopup = ()=>{
     const popupContext = useContext(PopupContext)
     return popupContext
   } catch (error) {
-    console.log("usePopup must be inside for a popup provoder");
+    console.log(error);
   }
   
 }

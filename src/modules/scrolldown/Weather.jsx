@@ -4,9 +4,19 @@ import axios from 'axios';
 import { WiDaySunny, WiRain, WiSnow, WiCloudy, WiThunderstorm, WiFog } from 'weather-icons-react';
 import SearchIcon from '@mui/icons-material/Search';
 import WeatherIcons from './WeatherIcons';
-const API_URL = "https://journey-engine.onrender.com/api/";
+import { Player } from '@lottiefiles/react-lottie-player';
+import instance from '../../services';
 
+;
 
+const LottieAnimation = () => (
+  <Player
+    autoplay
+    loop
+    src="/Weatheranimathion.json"
+    style={{ width: '150px', height: '150px' }}
+  />
+);
 
 function Weather() {
 
@@ -15,21 +25,20 @@ function Weather() {
   const findWeather = async (city) => {
 
     try {
-      const response = await axios.post(`${API_URL}weather/`, {
-        city: city
-      });
-      setWeather(response.data)
-      console.log("response====>", weather.description);
+      const response = await instance.post(`/weather/`, { city });
+      setWeather(response.data.data);
 
 
-      console.log("response===", response.data);
+
+
     } catch (error) {
       console.error('Error fetching weather data:', error);
+      setWeather({ error: "Error fetching weather data. Please try again." });
     }
   };
   const getWeatherIcon = () => {
     const desc = weather.description ? weather.description.toLowerCase() : '';
-  
+
     if (desc.includes('sun') || desc.includes('clear')) {
       return <WiDaySunny size={48} color="#FFD700" />;
     } else if (desc.includes('rain')) {
@@ -43,42 +52,45 @@ function Weather() {
     } else if (desc.includes('fog') || desc.includes('mist') || desc.includes('haze')) {
       return <WiFog size={48} color="#708090" />;
     } else {
-      return <WiCloudy size={48} color="#B0C4DE" />; 
+      return <WiCloudy size={48} color="#B0C4DE" />;
     }
   };
 
   const getCardBackgroundColor = () => {
     const desc = weather.description ? weather.description.toLowerCase() : '';
-  
+
     if (desc.includes('sun') || desc.includes('clear')) {
-      return 'rgba(255, 223, 186, 0.95)'; 
+      return 'rgba(255, 223, 186, 0.95)';
     } else if (desc.includes('rain')) {
-      return 'rgba(173, 216, 230, 0.95)'; 
+      return 'rgba(173, 216, 230, 0.95)';
     } else if (desc.includes('snow')) {
-      return 'rgba(240, 255, 255, 0.95)'; 
+      return 'rgba(240, 255, 255, 0.95)';
     } else if (desc.includes('cloud')) {
-      return 'rgba(220, 220, 220, 0.95)'; 
+      return 'rgba(220, 220, 220, 0.95)';
     } else if (desc.includes('thunder')) {
-      return 'rgba(255, 235, 205, 0.95)'; 
+      return 'rgba(255, 235, 205, 0.95)';
     } else if (desc.includes('fog') || desc.includes('mist') || desc.includes('haze')) {
-      return 'rgba(240, 240, 240, 0.95)'; 
+      return 'rgba(240, 240, 240, 0.95)';
     } else {
-      return 'rgba(255, 247, 86, 0.95)'; 
+      return 'rgba(255, 247, 86, 0.95)';
     }
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
+    if (!city) {
+      alert("Please enter a city name!");
+      return;
+    }
     getWeatherIcon(weather.description)
     findWeather(city);
-    console.log("city===", city);
   };
   return (
     <Box
       sx={{
         width: '100%',
         height: 'auto',
-        backgroundColor: 'rgba(255, 247, 86, 0.986)', 
+        backgroundColor: 'rgba(255, 247, 86, 0.986)',
         backgroundBlendMode: 'multiply',
         display: 'flex',
         flexDirection: 'column',
@@ -88,31 +100,31 @@ function Weather() {
         gap: 4,
       }}
     >
-   <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        width: '100%', 
-        mb: 2, 
-      }}
-    >
-      <Typography
-        variant="h4"
+      <Box
         sx={{
-          flexGrow: 1, 
-          fontWeight: 'bold',
-          color: '#333',
-          textTransform: 'uppercase',
-          fontFamily: 'Bebas Neue, sans-serif',
-          letterSpacing: '2px',
-          fontSize: '4rem',
-          textAlign: 'center', 
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          mb: 2,
         }}
       >
-        Weather Forecast
-      </Typography>
+        <Typography
+          variant="h4"
+          sx={{
+            flexGrow: 1,
+            fontWeight: 'bold',
+            color: '#333',
+            textTransform: 'uppercase',
+            fontFamily: 'Bebas Neue, sans-serif',
+            letterSpacing: '2px',
+            fontSize: '4rem',
+            textAlign: 'center',
+          }}
+        >
+          Weather Forecast
+        </Typography>
       </Box>
 
       <Box
@@ -149,20 +161,20 @@ function Weather() {
           }}
           type='submit'
         >
-          <SearchIcon/>
+          <SearchIcon />
         </Button>
       </Box>
 
-  
+
 
       <Card
         sx={{
-          maxWidth: 900,
+          maxWidth: { xs: '100%', sm: '80%', md: 900 },
           width: '100%',
-          mx: 2,
-          backgroundColor: getCardBackgroundColor(), // Main theme color
+          mx: { xs: 1, sm: 2 },
+          backgroundColor: getCardBackgroundColor(),
           borderRadius: 3,
-          padding: '3rem',
+          padding: { xs: '1.5rem', sm: '2rem', md: '3rem' },
           boxShadow: '0px 6px 18px rgba(0, 0, 0, 0.2)',
           overflow: 'hidden',
           transform: 'translateY(0)',
@@ -174,9 +186,12 @@ function Weather() {
         }}
       >
         <CardContent sx={{
-          height:'auto'
+          height: 'auto'
         }}>
-          <Typography variant="body1" sx={{fontWeight:'bold'}} color="black">Todays weather....</Typography>
+          {!weather.description ? <Typography variant="body1" sx={{ fontWeight: 'bold' }} color="black">Todays weather....<LottieAnimation /></Typography>
+            :(
+              <>
+              
           <Typography
             variant="h6"
             sx={{
@@ -220,6 +235,8 @@ function Weather() {
           >
             {weather.recommendation}
           </Typography>
+          </>
+            )}
           {weather.error && (
             <Alert
               severity="error"
@@ -235,17 +252,17 @@ function Weather() {
       </Card>
       <Box
         sx={{
-          position: 'absolute', 
-          right: 0, 
-          zIndex: 0, 
-          paddingLeft:'3rem'
+          position: 'absolute',
+          right: 0,
+          zIndex: 0,
+          paddingLeft: '3rem'
         }}
       >
         <div key={weather.description} className="slide-anim">
-        <WeatherIcons value={weather.description}  />
+          <WeatherIcons value={weather.description} />
         </div>
-      </Box>  
-      
+      </Box>
+
     </Box>
   );
 }

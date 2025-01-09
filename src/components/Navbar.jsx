@@ -10,12 +10,18 @@ import HomeIcon from '@mui/icons-material/Home';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List'; // Import List component
 import ListItem from '@mui/material/ListItem'; // Import ListItem component
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import routers from '../router/routerList';
+import { Link as ScrollLink } from 'react-scroll';
 
 
 const StyledAppBar = styled(AppBar)({
   backgroundColor: 'rgb(225,225,225,0.6)',
+  display:'flex',
+  
+  
+  
 });
 
 const Search = styled('div')(({ theme }) => ({
@@ -70,39 +76,43 @@ export default function StylishToolbar() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("search===", search);
-    navigate(`/search?query=${search}`)
+    navigate(`search?query=${search}`)
   }
 
 
-  
+
+
+
   return (
-    <StyledAppBar position="fixed" sx={{ width: '100vw', margin: '15px 0px', borderRadius: '20px' }}>
-      <Toolbar>
+    <StyledAppBar position="fixed" sx={{ width: '99vw', margin: '15px 0px',marginLeft:'10vh', borderRadius: '20px' }}>
+      <Toolbar sx={{display: 'flex',justifyContent: 'center', alignItems: 'center',
+        }}>
         <IconButton edge="start" color="inherit" aria-label="menu" sx={{ color: 'black', mr: 2 }} onClick={() => (window.location.assign('/#home'))}>
           <HomeIcon />
         </IconButton>
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, fontFamily: 'verdana', color: 'black' }}>
           Happy Journey
         </Typography>
-        <List sx={{ display: 'flex', padding: 0, margin: 0, color: 'black' }}>
+        <List sx={{ display: 'flex',justifyContent:'center', padding: 0, margin: 0, color: 'black' }}>
           <ListItem sx={{ padding: 0 }}>
-            <a href="/main/#home" style={{ textDecoration: 'none', color: 'black' }}>
-              <Button color="inherit">Home</Button>
-            </a>
+            <ScrollLink to="home" smooth={true} duration={100} style={{ textDecoration: 'none', color: 'black' }}>
+              <Button color="inherit" >Home</Button>
+            </ScrollLink>
           </ListItem>
           <ListItem sx={{ padding: 0 }}>
-            <a href="/main/#top-destinations" style={{ textDecoration: 'none', color: 'black', width: '10rem' }}>
-              <Button color="inherit">Top Destinations</Button>
-            </a>
+            <ScrollLink to="top-destinations" smooth={true} duration={100} style={{ textDecoration: 'none', color: 'black',width:'18vh',padding:0 }}>
+              <Button color="inherit"  >Top Destinations</Button>
+            </ScrollLink>
           </ListItem>
           <ListItem sx={{ padding: 0 }}>
-            <Button color="inherit" onClick={() => navigate('/travel-scope')}>TravelScope</Button>
-          </ListItem>
-          <ListItem sx={{ padding: 0 }}>
-            <a href="/main/#weather" style={{ textDecoration: 'none', color: 'black' }}>
+            <ScrollLink to="weather" smooth={true} duration={100} style={{ textDecoration: 'none', color: 'black' }}>
               <Button color="inherit">Weather</Button>
-            </a>
+            </ScrollLink>
+          </ListItem>
+          <ListItem sx={{ padding: 0 }}>
+            <ScrollLink to="contact" smooth={true} duration={100} style={{ textDecoration: 'none', color: 'black' }}>
+              <Button color="inherit">Contact</Button>
+            </ScrollLink>
           </ListItem>
         </List>
         <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'row' }}>
@@ -110,7 +120,7 @@ export default function StylishToolbar() {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search Location…" value={search} onChange={(e) => setSearch(e.target.value)} inputProps={{ 'aria-label': 'search' }} />
+            <StyledInputBase placeholder="Search Location…" value={search || ''} onChange={(e) => setSearch(e.target.value)} inputProps={{ 'aria-label': 'search' }} />
           </Search>
         </form>
       </Toolbar>

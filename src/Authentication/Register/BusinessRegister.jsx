@@ -4,6 +4,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
+import usePopup from '../../hooks/usePopup';
+import instance from '../../services';
 
 
 const theme = createTheme({
@@ -22,24 +24,25 @@ function BusinessRegister() {
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');  
+  const { showSnackbar } = usePopup()
   const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      registrationType: 'business',
-      fullName: data.get('fullName'),
-      company: data.get('companyName'),
-      dob: data.get('dob'),
-      gender: gender,
-      mobile: data.get('mobile'),
-      email: data.get('email'),
-      state: data.get('state'),
-      district: data.get('district'),
-      pincode: data.get('pincode'),
-      password: data.get('password'),
-    });
+    // console.log({
+    //   registrationType: 'business',
+    //   fullName: data.get('fullName'),
+    //   company: data.get('companyName'),
+    //   dob: data.get('dob'),
+    //   gender: gender,
+    //   mobile: data.get('mobile'),
+    //   email: data.get('email'),
+    //   state: data.get('state'),
+    //   district: data.get('district'),
+    //   pincode: data.get('pincode'),
+    //   password: data.get('password'),
+    // });
 
 
     const registerData = {
@@ -58,7 +61,7 @@ function BusinessRegister() {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/auth/register/', {
+      const response = await instance.post('/auth/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,18 +71,29 @@ function BusinessRegister() {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("result", result);
 
-        if (result.user?.name) {
+        if (result.responseStatus === "success") {
           setSuccessMessage('Registration successful!');
-          setError('');
+          showSnackbar({
+            message: result.message, 
+            open: true,
+            duration: 1000,
+            severity: "success",
+            variant: 'filled'
+          });
           navigate('/main', {
             state: {
-              name: result.user.name,
+              name: result.data
             },
           });
         } else {
-          setError('User data missing from response');
+          showSnackbar({
+            message: result.message, 
+            open: true,
+            duration: 1000,
+            severity: "error",
+            variant: 'filled'
+          });
         }
       } else {
         const errorResult = await response.json();
@@ -174,6 +188,11 @@ function BusinessRegister() {
                   name="dob"
                   type="date"
                   InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    inputProps: {
+                      max: new Date().toISOString().split("T")[0], 
+                    },
+                  }}
                 />
               </Grid>
 
